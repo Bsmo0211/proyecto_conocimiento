@@ -3,22 +3,40 @@
 import styles from "@/src/app/registro/registro.module.css";
 import React, { useState } from "react";
 import { Form, Input, Button, Card, Select, Typography, message } from "antd";
+import { useMutation } from "@apollo/client/react";
+import { INSERT_PACIENTE } from "@/src/graphql/mutations";
+import { useRouter } from "next/navigation";
 
 const { Title } = Typography;
 
 export default function RegistroPage() {
   const [form] = Form.useForm();
-  /*  
-TODO: Eliminar de json del fomr el elemento que esta en la key de sexo y pasar este elemento
-const [genero, setGenero] = useState(""); */
+  const [crearPaciente, { loading, error }] = useMutation(INSERT_PACIENTE);
 
-  const onFinish = (values: any) => {
-    console.log("Datos listos para enviar:", values);
-    message.success("Formulario validado correctamente");
-  };
+  const { push } = useRouter();
 
-  const handleChange = (value: string) => {
-    console.log(`Genero Seleccionado ${value}`);
+  const onFinish = async (values: any) => {
+    const pacienteData = {
+      ...values,
+      rol: "paciente",
+    };
+
+    try {
+      await crearPaciente({
+        variables: {
+          datos: {
+            usuariosCreado: {
+              ...pacienteData,
+            },
+          },
+        },
+      });
+      message.success("Usuario registrado exitosamente");
+      form.resetFields();
+      push("/");
+    } catch (err) {
+      message.error("La peticion para el registro de paciente falló");
+    }
   };
 
   return (
@@ -35,19 +53,19 @@ const [genero, setGenero] = useState(""); */
           requiredMark={false}
         >
           <Form.Item
-            name="primer_nombre"
+            name="primerNombre"
             label="Primer Nombre"
             rules={[{ required: true, message: "Por favor ingresa tu nombre" }]}
           >
             <Input placeholder="Ej. Santiago" />
           </Form.Item>
 
-          <Form.Item name="segundo_nombre" label="Segundo Nombre">
+          <Form.Item name="segundoNombre" label="Segundo Nombre">
             <Input />
           </Form.Item>
 
           <Form.Item
-            name="primer_apellido"
+            name="primerApellido"
             label="Primer Apellido"
             rules={[
               { required: true, message: "Por favor ingresa tu apellido" },
@@ -56,7 +74,7 @@ const [genero, setGenero] = useState(""); */
             <Input placeholder="Ej. Pérez" />
           </Form.Item>
 
-          <Form.Item name="segundo_apellido" label="Segundo Apellido">
+          <Form.Item name="segundoApellido" label="Segundo Apellido">
             <Input />
           </Form.Item>
 
@@ -94,12 +112,11 @@ const [genero, setGenero] = useState(""); */
                 { value: "F", label: "Femenino" },
                 { value: "O", label: "Otro" },
               ]}
-              onChange={handleChange}
             ></Select>
           </Form.Item>
 
           <Form.Item
-            name="password_hash"
+            name="passwordHash"
             label="Contraseña"
             rules={[{ required: true, min: 6, message: "Mínimo 6 caracteres" }]}
           >
