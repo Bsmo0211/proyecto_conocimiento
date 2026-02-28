@@ -1,0 +1,41 @@
+.mainImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: whitesmoke;
+}
+
+.mainCard{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.mainRow{
+  min-height: 100vh;
+  margin: 0;
+}
+
+.cardMain{
+  width: 100%;
+  max-width: 500px;
+  background-color:white;
+}
+
+.rowBotonesRegistroMain{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.estiloBoton{
+  width: 150px;
+  margin-left: 10px;
+}
+
+.tituloPrincipal{
+  text-align: center;
+  margin-bottom: 10px;
+}

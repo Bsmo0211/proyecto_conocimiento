@@ -1,0 +1,15 @@
+# Ignorar node_modules en cualquier nivel
+node_modules/
+**/node_modules/
+
+# Ignorar archivos de variables de entorno
+.env
+**/.env
+
+# Ignorar carpetas de compilación de Next.js o React
+.next/
+build/
+out/
+
+# Archivos del sistema
+.DS_Store
